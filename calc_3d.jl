@@ -32,16 +32,16 @@ function line_integral(f, x, y, z, a, b)
     """ Evaluate the line integral of a scalar function f along the curve (x(t), y(t), z(t)) from t = a to t = b 
     Parameters: f:R³ -> R, x:R -> R, y:R -> R, z:R -> R, a,b ∈ R
     """
-    ys = [f(x(t), y(t), z(t)) * hypot(derivative(x, t), derivative(y, t), derivative(z, t)) for t in a:dt:b]
-    return sum(ys * dt)
+    h(t) = f(x(t), y(t), z(t)) * hypot(derivative(x, t), derivative(y, t), derivative(z, t))
+    return integral(h, a, b)
 end
 
 function path_integral(F, x, y, z)
     """ Evaluate the line integral of a vector function F along the curve (x(t), y(t), z(t)) from t = a to t = b 
     Parameters: F:R³ -> R³, x:R -> R, y:R -> R, z:R -> R, a,b ∈ R
     """
-    ys = [F(x(t), y(t), z(t))[1] * derivative(x, t) + F(x(t), y(t), z(t))[2] * derivative(y, t) + F(x(t), y(t), z(t))[3] * derivative(z, t) for t in a:dt:b]
-    return sum(ys * dt)
+    h(t) = F(x(t), y(t), z(t))[1] * derivative(x, t) + F(x(t), y(t), z(t))[2] * derivative(y, t) + F(x(t), y(t), z(t))[3] * derivative(z, t)
+    return integral(h, a, b)
 end
 
 function gradient(f, x, y, z)

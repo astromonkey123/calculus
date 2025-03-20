@@ -1,7 +1,6 @@
 include("calc_1d.jl")
 
 const dy = 1e-3
-const dt = 1e-3
 
 f(x, y) = x + y
 F(x, y) = [x, y]
@@ -24,16 +23,16 @@ function line_integral(f, x, y, a, b)
     """ Evaluate the line integral of a scalar function f along the curve (x(t), y(t)) from t = a to t = b 
     Parameters: f:R² -> R, x:R -> R, y:R -> R, a,b ∈ R
     """
-    ys = [f(x(t), y(t)) * hypot(derivative(x, t), derivative(y, t)) for t in a:dt:b]
-    return sum(ys * dt)
+    h(t) = f(x(t), y(t)) * hypot(derivative(x, t), derivative(y, t))
+    return integral(h, a, b)
 end
 
 function path_integral(F, x, y)
     """ Evaluate the line integral of a vector function F along the curve (x(t), y(t)) from t = a to t = b 
     Parameters: F:R² -> R², x:R -> R, y:R -> R, a,b ∈ R
     """
-    ys = [F(x(t), y(t))[1] * derivative(x, t) + F(x(t), y(t))[2] * derivative(y, t) for t in a:dt:b]
-    return sum(ys * dt)
+    h(t) = F(x(t), y(t))[1] * derivative(x, t) + F(x(t), y(t))[2] * derivative(y, t)
+    return integral(h, a, b)
 end
 
 function gradient(f, x, y)
