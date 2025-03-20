@@ -1,22 +1,17 @@
 include("calc_1d.jl")
 
-const dy = 1e-3
-
-f(x, y) = x + y
-F(x, y) = [x, y]
-
 function partial_x(f, x, y)
     """ Evaluate the partial derivative of f with respect to x at (x, y) 
     Parameters: f:R² -> R, (x, y) ∈ R²
     """
-    return (f(x + dx, y) - f(x, y)) / dx
+    return (f(x + Δ, y) - f(x, y)) / Δ
 end
 
 function partial_y(f, x, y)
     """ Evaluate the partial derivative of f with respect to y at (x, y) 
     Parameters: f:R² -> R, (x, y) ∈ R²
     """
-    return (f(x, y + dy) - f(x, y)) / dy
+    return (f(x, y + Δ) - f(x, y)) / Δ
 end
 
 function line_integral(f, x, y, a, b)

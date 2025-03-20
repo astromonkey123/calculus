@@ -1,31 +1,24 @@
 include("calc_1d.jl")
 
-const dy = 1e-3
-const dz = 1e-3
-const dt = 1e-3
-
-f(x, y, z) = x + y + z
-F(x, y, z) = [x, y, z]
-
 function partial_x(f, x, y, z)
     """ Evaluate the partial derivative of f with respect to x at (x, y, z) 
     Parameters: f:R³ -> R, (x, y, z) ∈ R³
     """
-    return (f(x + dx, y, z) - f(x, y, z)) / dx
+    return (f(x + Δ, y, z) - f(x, y, z)) / Δ
 end
 
 function partial_y(f, x, y, z)
     """ Evaluate the partial derivative of f with respect to y at (x, y, z) 
     Parameters: f:R³ -> R, (x, y, z) ∈ R³
     """
-    return (f(x, y + dy, z) - f(x, y, z)) / dy
+    return (f(x, y + Δ, z) - f(x, y, z)) / Δ
 end
 
 function partial_z(f, x, y, z)
     """ Evaluate the partial derivative of f with respect to z at (x, y, z) 
     Parameters: f:R³ -> R, (x, y, z) ∈ R³
     """
-    return (f(x, y, z + dz) - f(x, y, z)) / dz
+    return (f(x, y, z + Δ) - f(x, y, z)) / Δ
 end
 
 function line_integral(f, x, y, z, a, b)
