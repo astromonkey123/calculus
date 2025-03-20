@@ -52,7 +52,7 @@ function gradient(f, x, y, z)
 end
 
 function divergence(F, x, y, z)
-    """ Evaluate the derivative of F at (x, y, z) 
+    """ Evaluate the divergence of F at (x, y, z) 
     Parameters: F:R³ -> R³, (x, y, z) ∈ R³
     """
     return partial_x(F, x, y, z)[1] + partial_y(F, x, y, z)[2] + partial_z(F, x, y, z)[3]

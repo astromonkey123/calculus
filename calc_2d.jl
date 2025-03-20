@@ -44,7 +44,7 @@ function gradient(f, x, y)
 end
 
 function divergence(F, x, y)
-    """ Evaluate the derivative of F at (x, y) 
+    """ Evaluate the divergence of F at (x, y) 
     Parameters: F:R² -> R², (x, y) ∈ R²
     """
     return partial_x(F, x, y)[1] + partial_y(F, x, y)[2]
