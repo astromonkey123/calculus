@@ -1,54 +1,38 @@
 using GLMakie
 
+include("utils.jl")
+
 x_bounds = [-10, 10]
 y_bounds = [-10, 10]
-density = 20
+density = 30
 
 xs = collect(LinRange(x_bounds..., density))
 ys = collect(LinRange(y_bounds..., density))
 
+fig = Figure(size=(700, 700))
+ax = Axis(fig[1, 1], limits=(x_bounds..., y_bounds...))
+set_theme!(merge(theme_black(), theme_latexfonts()))
+
 f(x, y) = 0.5 * y * (2 - y)
 
-function map_value(value, domain_start, domain_end, range_start, range_end)
-    normalized = (value - domain_start) / (domain_end - domain_start)
-    mapped = (normalized * (range_end - range_start)) + range_start
-    return mapped
-end
-
 function slope_field()
-    fig = Figure(size=(700, 700))
-    ax = Axis(fig[1, 1], limits=(x_bounds..., y_bounds...))
-    set_theme!(merge(theme_black(), theme_latexfonts()))
+    us_norm = [1/hypot(1, f(x, y)) for x in xs, y in ys]
+    vs_norm = [f(x, y)/hypot(1, f(x, y)) for x in xs, y in ys]
 
-    us = [1/hypot(f(x, y)...) for x in xs, y in ys]
-    vs = [f(x, y)/hypot(f(x, y)...) for x in xs, y in ys]
+    colors = [RGBf(0.5 - 0.5l, 0.5, 0.5) for l in vs_norm]
 
-    colors = [RGBf(0.75-0.25l, 0.75, 0.75) for l in vs]
-
-    arrows!(ax, xs, ys, us, vs, color=vec(colors), arrowsize=0, lengthscale=0.25)
-
-    x_pts = []
-    y_pts = []
+    arrows!(ax, xs, ys, us_norm, vs_norm, color=vec(colors), arrowsize=0, lengthscale=0.5)
 
     on(events(fig).mousebutton) do event
         if event.action == Mouse.press
-            x_pts = []
-            y_pts = []
-            # println(events(ax).mouseposition)
-            mapped_x = map_value(events(ax).mouseposition[][1], 51, 685, x_bounds...)
-            mapped_y = map_value(events(ax).mouseposition[][2], 36, 683, y_bounds...)
-            mpos = [mapped_x, mapped_y]
-            append!(x_pts, mpos[1])
-            append!(y_pts, mpos[2])
-            for t in 0:0.01:10
-                x_next = x_pts[end] + 0.05
-                y_next = y_pts[end] + f(x_pts[end], y_pts[end]) * 0.05
-                append!(x_pts, x_next)
-                append!(y_pts, y_next)
-            end
+            x_pts = [map_value(events(ax).mouseposition[][1], 50, 684, x_bounds...)]
+            y_pts = [map_value(events(ax).mouseposition[][2], 37, 682, y_bounds...)]
+            euler_method(f, 0.01, 10, x_pts, y_pts)
             lines!(ax, x_pts, y_pts, color=:white)
         end
     end
 
-    return fig
+    display(fig)
 end
+
+slope_field()
