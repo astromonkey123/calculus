@@ -68,7 +68,7 @@ function flux_integral(F, x, y, a, b)
     Parameters: F:R² -> R², x:R -> R, y:R -> R, a,b ∈ R
     Returns: ∫ F ⋅ n̂ds
     """
-    n̂ds(t) = [-y(t), x(t)] / hypot(x(t), y(t)) * hypot(derivative(x, t), derivative(y, t))
+    n̂ds(t) = [-derivative(y, t), derivative(x, t)]
     h(t) = LinearAlgebra.dot(F(x(t), y(t)), n̂ds(t))
     return integral(h, a, b)
 end
