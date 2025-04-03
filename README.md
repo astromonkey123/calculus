@@ -1,5 +1,6 @@
 # Calculus
 This package contains many useful functions for single- and multi-variable calculus.
+
 It also includes scripts to display slope and vector fields, as well as algorithms like Newton's method and Euler's method.
 
 ## Contents
